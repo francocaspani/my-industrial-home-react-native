@@ -1,5 +1,5 @@
 import axios from "axios";
-import { urlBackend } from '../../../App'
+import { urlBackend } from "../../App";
 
 const usersActions = {
     signUpUser: (userData) => {
@@ -32,6 +32,19 @@ const usersActions = {
         return async (dispatch, getState) => {
             localStorage.removeItem('token')
             dispatch({ type: 'logOutUser', payload: null })
+        }
+    },
+    sendNewsletter: (email) => {
+        console.log(email)
+        return async (dispatch, getState) => {
+            try {
+                const res = await axios.post(`${urlBackend}/confirmation/${email}`)
+                dispatch({ type: 'newsletter', payload: res.data })
+                console.log(res)
+                return res
+            } catch (error) {
+                console.log(error)
+            }
         }
     },
     verifyToken: (token) => {

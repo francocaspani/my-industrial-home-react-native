@@ -12,7 +12,22 @@ const homeStyles = StyleSheet.create({
         height: height,
         width: width,
         flex: 1
+    },
+    button:{
+        position: 'absolute',
+        top: '50%',
+        right: 50,
+        height: 30,
+        width: 100,
+        backgroundColor: '#FFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5
+    },
+    buttonText:{
+        fontSize: 16
     }
+
 })
 
 export default homeStyles

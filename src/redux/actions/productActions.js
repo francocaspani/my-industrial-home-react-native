@@ -1,5 +1,5 @@
 import axios from "axios";
-import { urlBackend } from '../../../App'
+import { urlBackend } from "../../App";
 
 const productActions = {
     getProducts: () => {
@@ -63,8 +63,19 @@ const productActions = {
                 {console.log(res)}
                 return res
             }
-        
     },
+    modifyProduct: (id,productData) => {
+        return async (dispatch, getState) => {
+            const res = await axios.put(`${urlBackend}/products/${id}`,productData )
+            dispatch({type: "modifyProduct", payload: res.data.response.product})
+            return res
+        }
+    },
+    getRating: (reviews) => {
+        return (dispatch, getState) => {
+            dispatch({type: 'getRating' , payload: reviews})
+        }
+    }
 }
 
 export default productActions

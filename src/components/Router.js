@@ -9,6 +9,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import SearchScreen from '../screens/SearchScreen';
 import FavouriteScreen from '../screens/FavouriteScreen';
 import AccountScreen from '../screens/AccountScreen';
+import ProductDetailScreen from '../screens/ProductDetailScreen';
 
 const Drawer = createDrawerNavigator()
 const Tab = createBottomTabNavigator()
@@ -27,6 +28,29 @@ function HomeStack() {
                 options={{
                     title: 'My Industrial Home'
                 }} />
+        </Stack.Navigator>
+    )
+}
+
+function SearchStack() {
+    return(
+        <Stack.Navigator
+        screenOptions={{
+            headerBackVisible: true,
+            headerTransparent: true,
+        }}
+        >
+            <Stack.Screen
+            component={SearchScreen}
+            name='Search Screen'
+            options={{
+                headerShown: false,
+            }} 
+            />
+            <Stack.Screen
+            component={ProductDetailScreen}
+            name='Details'
+            />
         </Stack.Navigator>
     )
 }
@@ -68,7 +92,7 @@ export default function Router() {
                     }} />
                 <Tab.Screen
                     name='Search'
-                    component={SearchScreen}
+                    component={SearchStack}
                     options={{
                         headerShown: false,
                     }} />
