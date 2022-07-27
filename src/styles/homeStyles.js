@@ -26,6 +26,14 @@ const homeStyles = StyleSheet.create({
     },
     buttonText:{
         fontSize: 16
+    },
+    logo:{
+        height:150,
+        width: 300,
+        position: 'absolute',
+        top: 60,
+        left: 50
+
     }
 
 })

@@ -10,6 +10,8 @@ import SearchScreen from '../screens/SearchScreen';
 import FavouriteScreen from '../screens/FavouriteScreen';
 import AccountScreen from '../screens/AccountScreen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
+import ReviewsScreen from '../screens/ReviewsScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 
 const Drawer = createDrawerNavigator()
 const Tab = createBottomTabNavigator()
@@ -26,8 +28,8 @@ function HomeStack() {
                 component={HomeScreen}
                 name='HomeScreen'
                 options={{
-                    title: 'My Industrial Home'
-                }} />
+                headerShown: false,
+            }} />
         </Stack.Navigator>
     )
 }
@@ -51,8 +53,37 @@ function SearchStack() {
             component={ProductDetailScreen}
             name='Details'
             />
+            <Stack.Screen
+            component={ReviewsScreen}
+            name='Reviews'
+            />
         </Stack.Navigator>
     )
+}
+
+function FavouriteStack() {
+    return(
+        <Stack.Navigator
+        screenOptions={{
+            headerBackVisible: true,
+            headerTransparent: true,
+        }}
+        >
+            <Stack.Screen
+            component={FavouriteScreen}
+            name='Favourites Screen'
+            />
+        </Stack.Navigator>
+    )
+}
+
+function AccountStackScreen() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="My Account" component={AccountScreen} />
+            <Stack.Screen name="Sign Up" component={SignUpScreen} />
+        </Stack.Navigator>
+    );
 }
 
 
@@ -98,13 +129,13 @@ export default function Router() {
                     }} />
                 <Tab.Screen
                     name='Favourites'
-                    component={FavouriteScreen}
+                    component={FavouriteStack}
                     options={{
                         headerShown: false,
                     }} />
                 <Tab.Screen
                     name='Account'
-                    component={AccountScreen}
+                    component={AccountStackScreen}
                     options={{
                         headerShown: false,
                     }} />

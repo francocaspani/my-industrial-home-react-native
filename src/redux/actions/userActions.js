@@ -1,5 +1,6 @@
 import axios from "axios";
-import { urlBackend } from "../../App";
+import { urlBackend } from "../../../App";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const usersActions = {
     signUpUser: (userData) => {
@@ -20,7 +21,7 @@ const usersActions = {
                 dispatch({ type: 'logInUser', payload: res.data })
                 console.log(res)
                 if (res.data.success) {
-                    localStorage.setItem('token', res.data.response.token)
+                    AsyncStorage.setItem('@token', res.data.response.token)
                 }
                 return res
             } catch (error) {
@@ -30,7 +31,7 @@ const usersActions = {
     },
     logOutUser: () => {
         return async (dispatch, getState) => {
-            localStorage.removeItem('token')
+            AsyncStorage.removeItem('@token')
             dispatch({ type: 'logOutUser', payload: null })
         }
     },
@@ -57,12 +58,12 @@ const usersActions = {
                         dispatch({ type: 'logInUser', payload: user.data })
                         return user
                     } else {
-                        localStorage.removeItem('token')
+                        AsyncStorage.removeItem('@token')
                     }
                 }).catch(error => {
                     if (error.response.status === 401)
                         dispatch({ type: 'logOutUser', payload: null }) 
-                        localStorage.removeItem('token')
+                        AsyncStorage.removeItem('@token')
                     return {
                         data:{
                             success: false,
