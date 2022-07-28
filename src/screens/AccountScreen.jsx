@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Alert, ImageBackground } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import accountStyles from '../styles/accountStyles';
 import usersActions from '../redux/actions/userActions'
+import favouriteStyles from '../styles/favouritesStyles';
 
 
-
-function AccountScreen({navigation}) {
+function AccountScreen({ navigation }) {
     const user = useSelector(store => store.usersReducer.userData)
     const dispatch = useDispatch()
     const [password, setPassword] = useState(null)
@@ -29,7 +29,7 @@ function AccountScreen({navigation}) {
             }
             console.log(loggedUser)
             const res = await dispatch(usersActions.logInUser(loggedUser))
-            if (!res.data.success){
+            if (!res.data.success) {
                 Alert.alert(
                     "Error",
                     res.data.message,
@@ -58,7 +58,7 @@ function AccountScreen({navigation}) {
                 <>
                     <View style={accountStyles.userContainer}>
                         <Text style={accountStyles.logInText}>Hi {user.firstName}!</Text>
-                        
+
                     </View>
                     <View style={accountStyles.logInContainer}>
                         {/* <TouchableOpacity style={accountStyles.logIn}
@@ -68,7 +68,7 @@ function AccountScreen({navigation}) {
                             onPress={handleLogOut}
                         ><Text style={accountStyles.logInText}>Log Out</Text></TouchableOpacity>
                     </View>
-                    
+
                 </>
 
                 :
@@ -96,18 +96,24 @@ function AccountScreen({navigation}) {
                         <TouchableOpacity style={accountStyles.logIn}
                             onPress={HandleSubmit}
                         ><Text style={accountStyles.logInText}>Log In</Text></TouchableOpacity>
-                        <Text>Or log in with:</Text>
+                        <Text style={{fontWeight: '700', fontSize: 18}}>Or log in with:</Text>
                         <TouchableOpacity style={accountStyles.logIn}><Text style={accountStyles.logInText}>Google</Text></TouchableOpacity>
                     </View>
                     <View style={accountStyles.logInContainer}>
                         <Text style={accountStyles.ctaSignUp}>Not a member? </Text><TouchableOpacity style={accountStyles.ctaSignUpButton}
-                        onPress={()=>navigation.navigate('Sign Up')}
+                            onPress={() => navigation.navigate('Sign Up')}
                         ><Text>Sign up</Text></TouchableOpacity>
                     </View>
                 </>
 
             }
-
+            <ImageBackground
+                style={accountStyles.imgBack}
+                source={{
+                    uri: 'https://i.pinimg.com/564x/7c/89/c1/7c89c1817f9c03988c64a3601ca4b04b.jpg'
+                }}
+                resizeMode='cover'
+            />
         </View>
 
     )

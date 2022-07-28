@@ -62,6 +62,13 @@ const productDetailStyles = StyleSheet.create({
     },
     buttonReviewsText: {
         fontSize: 25,
+    },
+    picker:{
+        position: 'absolute',
+        height: 200,
+        top: 600,
+        width: width,
+        backgroundColor: '#FFF'
     }
 })
 

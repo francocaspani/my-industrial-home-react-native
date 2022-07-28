@@ -12,6 +12,11 @@ import AccountScreen from '../screens/AccountScreen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import ReviewsScreen from '../screens/ReviewsScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import { useSelector, useDispatch } from 'react-redux';
+import BasketScreen from '../screens/BasketScreen';
+import CheckoutScreen from '../screens/CheckoutScreen';
+import { useEffect } from 'react';
+import basketActions from '../redux/actions/basketActions'
 
 const Drawer = createDrawerNavigator()
 const Tab = createBottomTabNavigator()
@@ -71,7 +76,14 @@ function FavouriteStack() {
         >
             <Stack.Screen
             component={FavouriteScreen}
-            name='Favourites Screen'
+            name='Your Favourites'
+            options={{
+                headerShown: false,
+            }} 
+            />
+            <Stack.Screen
+            component={ProductDetailScreen}
+            name='Details'
             />
         </Stack.Navigator>
     )
@@ -86,10 +98,34 @@ function AccountStackScreen() {
     );
 }
 
-
+function BasketStack(){
+    return(
+        <Stack.Navigator>
+            <Stack.Screen
+            name='Basket'
+            component={BasketScreen}
+            />
+            <Stack.Screen
+            name='Checkout'
+            component={CheckoutScreen}
+            />
+        </Stack.Navigator>
+    )
+}
 
 export default function Router() {
+    const user = useSelector(store => store.usersReducer.userData)
+    const basket = useSelector(store => store.basketReducer.productsBasket)
     const scheme = useColorScheme()
+    const dispatch = useDispatch()
+    
+    useEffect(() => {
+        if (user) {
+          dispatch(basketActions.getUserBasket())
+        }
+      }, [user])
+    
+    
     return (
         <NavigationContainer
             theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
@@ -109,6 +145,8 @@ export default function Router() {
                             iconName = focused ? 'person' : 'person-outline';
                         } else if (route.name === 'Favourites') {
                             iconName = focused ? 'heart' : 'heart-outline'
+                        }else if (route.name === 'Basket') {
+                            iconName = focused ? 'basket' : 'basket-outline'
                         }
                         return <Ionicons name={iconName} size={size} color={color} />;
                     },
@@ -128,16 +166,24 @@ export default function Router() {
                         headerShown: false,
                     }} />
                 <Tab.Screen
+                    name='Basket'
+                    component={BasketStack}
+                    options={{
+                        headerShown: false,
+                        tabBarBadge: basket ? basket.length : null
+                    }} />
+                <Tab.Screen
                     name='Favourites'
                     component={FavouriteStack}
                     options={{
                         headerShown: false,
+                        tabBarBadge: user? user.favourite.length : null
                     }} />
                 <Tab.Screen
                     name='Account'
                     component={AccountStackScreen}
                     options={{
-                        headerShown: false,
+                        headerShown: false
                     }} />
             </Tab.Navigator>
         </NavigationContainer>

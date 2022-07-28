@@ -1,9 +1,10 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+const { width, height } = Dimensions.get('window')
+
 
 const accountStyles = StyleSheet.create({
     accountContainer:{
-        flex: 1,
-        backgroundColor: 'orange'
+        flex: 1
     },
     logoAndTitle:{
         height: 200,
@@ -57,7 +58,7 @@ const accountStyles = StyleSheet.create({
     },
     logIn:{
         height: 40,
-        width: 250,
+        width: 200,
         backgroundColor: '#fff',
         margin: 5,
         borderRadius: 20,
@@ -82,6 +83,12 @@ const accountStyles = StyleSheet.create({
         padding: 5,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    imgBack:{
+        width: width,
+        height: height,
+        zIndex: -1,
+        position: 'absolute'
     }
 })
 

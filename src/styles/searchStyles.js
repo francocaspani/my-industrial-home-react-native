@@ -27,7 +27,7 @@ const searchStyles = StyleSheet.create({
     productCard: {
         height: 200,
         width: width - 30,
-        backgroundColor: '#fff',
+        backgroundColor: 'rgb(255, 255, 255)',
         marginBottom: 10,
         borderRadius: 20,
         justifyContent: 'space-between',

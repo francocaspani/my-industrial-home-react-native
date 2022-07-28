@@ -7,6 +7,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Rating } from 'react-native-ratings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import usersActions from '../redux/actions/userActions';
+import { Picker, PickerIOS } from '@react-native-picker/picker';
+import basketActions from '../redux/actions/basketActions'
 
 export default function ProductDetailScreen({ route, navigation }) {
     const { id } = route.params
@@ -14,24 +16,23 @@ export default function ProductDetailScreen({ route, navigation }) {
     const [favourites, setFavourites] = useState([])
     const [product, setProduct] = useState(null)
     const [reload, setReload] = useState(false)
+    const [stock, setStock] = useState([])
     const dispatch = useDispatch()
-    const user = useSelector(store => store.usersReducer.userData)
-    //const product = useSelector(store => store.productsReducer.product)
-    const rating = useSelector(store => store.productsReducer.rating)
 
-    // if (user) {
-    //     if (user.favourite.length > 0){
-    //         setFavourites(user.favourite.map(fav => fav._id))
-    //     }
-    // }
-    
-    console.warn(user)
+    const user = useSelector(store => store.usersReducer.userData)
+    const rating = useSelector(store => store.productsReducer.rating)
+    const basket = useSelector(store => store.basketReducer.productsBasket)
+
+
+
     const onClickReload = () =>
         setReload(!reload);
 
     useEffect(() => {
         dispatch(productActions.getOneProduct(id))
             .then(res => setProduct(res.data.response.product))
+
+        dispatch(basketActions.getUserBasket())
     }, [reload])
 
     useEffect(() => {
@@ -40,14 +41,22 @@ export default function ProductDetailScreen({ route, navigation }) {
                 dispatch(productActions.getRating(product.reviews))
                 setRatingProduct(rating)
             }
+            if (product.stock > 0) {
+                let stockArray = [...Array(product.stock).keys()]
+                setStock(stockArray)
+            }
         }
-    }, [product, rating])
+        if (user) {
+            const favId = user.favourite.map(fav => fav._id)
+            setFavourites(favId)
+        }
+    }, [product, rating, user])
 
     const handleFavourite = async () => {
         if (user) {
             const token = await AsyncStorage.getItem('@token')
             const res = await dispatch(usersActions.handleFavourites(id, token))
-            console.warn(id)
+
         } else {
             Alert.alert(
                 "You have to be logged to save this to favourites",
@@ -57,8 +66,27 @@ export default function ProductDetailScreen({ route, navigation }) {
                 ]
             );
         }
+
+        if (AsyncStorage.getItem('@token') !== null) {
+            const verifyToken = async () => {
+                const token = await AsyncStorage.getItem('@token')
+                await dispatch(usersActions.verifyToken(token))
+            }
+            verifyToken()
+        }
         onClickReload()
     }
+
+    async function addBasket() {
+        const productToAdd = {
+            productId: product._id,
+            amount: 1
+        }
+        await dispatch(basketActions.addToBasket(productToAdd));
+        onClickReload()
+    }
+
+
 
     return (
         <>
@@ -89,9 +117,13 @@ export default function ProductDetailScreen({ route, navigation }) {
                         </View>
                         <View style={productDetailStyles.detailButtons}>
                             <TouchableOpacity style={productDetailStyles.button}
-                            onPress={handleFavourite}
-                            ><Ionicons name='heart' size={50} /></TouchableOpacity>
-                            <TouchableOpacity style={productDetailStyles.button}><Ionicons name='basket' size={50} /></TouchableOpacity>
+                                onPress={handleFavourite}
+                            >
+                                {favourites.includes(product._id) ? <Ionicons name='heart' size={50} /> : <Ionicons name='heart-outline' size={50} />}
+                            </TouchableOpacity>
+                            <TouchableOpacity style={productDetailStyles.button}
+                                onPress={() => addBasket()}
+                            ><Ionicons name='basket' size={50} /></TouchableOpacity>
                         </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <TouchableOpacity style={productDetailStyles.buttonReviews}
@@ -99,8 +131,27 @@ export default function ProductDetailScreen({ route, navigation }) {
                             ><Text style={productDetailStyles.buttonReviewsText}>Reviews</Text></TouchableOpacity>
                         </View>
 
-
-
+                        {/* {showPicker &&
+                            <Picker
+                                style={productDetailStyles.picker}
+                                selectedValue={amount}
+                                onBlur={()=> setShowPicker(!showPicker)}
+                                onValueChange={(itemValue, itemIndex) =>{
+                                    setAmount(itemValue)
+                                    setTimeout(() => {
+                                        addBasket(itemValue)
+                                        setShowPicker(!showPicker)
+                                        setAmount(0)
+                                    }, 2000);
+                                }
+                                }>
+                                    <Picker.Item label='0' value={0} />
+                                {stock.map((stock) => {
+                                    return (
+                                        <Picker.Item label={`${stock+1}`} value={stock + 1} />
+                                    )
+                                })}
+                            </Picker>} */}
                     </View>
                 </>
             }
