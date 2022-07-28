@@ -15,7 +15,6 @@ export default function BasketScreen() {
   const basket = useSelector(store => store.basketReducer.productsBasket)
   const [reload, setReload] = useState(false)
   const [showPicker, setShowPicker] = useState(false)
-  const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     if (user) {
@@ -50,11 +49,11 @@ export default function BasketScreen() {
     setReload(!reload)
   }
 
-  async function modifyBasket(item) {
-    setAmount(event.target.value);
+  async function modifyBasket(amountPicked, item) {
+    console.warn(item)
     const toModify = {
-      productId: product._id,
-      amount: event.target.value,
+      productId: item._id,
+      amount: amountPicked,
     }
     await dispatch(basketActions.modifyBasketProduct(toModify))
     setReload(!reload)
@@ -96,24 +95,29 @@ export default function BasketScreen() {
                   </View>
                 </View>
                 {showPicker &&
-                  <PickerIOS
-                    style={basketStyles.picker}
-                    selectedValue={amount}
-                    onValueChange={(itemValue, itemIndex) => {
-                      setAmount(itemValue)
-                      setTimeout(() => {
-                        // addBasket(itemValue)
-                        // setShowPicker(!showPicker)
-                        //setAmount(0)
-                      }, 2000);
-                    }
-                    }>
-                    {stock.map((stock) => {
-                      return (
-                        <Picker.Item label={`${stock + 1}`} value={stock + 1} />
-                      )
-                    })}
-                  </PickerIOS>}
+                  <ScrollView
+                  showsHorizontalScrollIndicator={false}
+                  scrollEventThrottle={1}
+                  style={basketStyles.picker}
+                  >
+                      {stock.map((stock) => {
+                        return (
+                          <TouchableOpacity
+                          onPress={()=>{
+                            modifyBasket((stock+1), item)
+                            setShowPicker(!showPicker)
+                          }}
+                          style={basketStyles.qttButton}
+                          >
+                            <Text style={{color: 'white'}}>
+                              {stock +1}
+                            </Text>
+
+                          </TouchableOpacity>
+                        )
+                      })}
+                  </ScrollView>}
+                  
               </Swipeable>
 
             )
@@ -133,7 +137,13 @@ export default function BasketScreen() {
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           <Text style={{ fontSize: 25 }}>Total:</Text>
           <Text style={{ fontSize: 25 }}>${totalBasket}</Text>
+          
         </View>
+        <TouchableOpacity style={basketStyles.checkoutButton}>
+          <Text style={basketStyles.chekoutText}>
+            Checkout
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   )

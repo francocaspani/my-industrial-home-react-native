@@ -19,9 +19,9 @@ export default function FavouriteScreen({ navigation }) {
           <View style={favouriteStyles.favScrollContainer}>
 
             <ScrollView style={favouriteStyles.scrollCards}>
-              {user.favourite.map(prod => {
+              {user.favourite.map((prod,i )=> {
                 return (
-                  <CardProduct prod={prod} navigation={navigation} />
+                  <CardProduct key={i} prod={prod} navigation={navigation} />
                 )
               })}
 

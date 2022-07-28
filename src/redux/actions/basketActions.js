@@ -59,9 +59,9 @@ const basketActions = {
         }
     },
 
-    modifyBasketProduct: async (toModify) => {
-        const token = await AsyncStorage.getItem('@token')
+    modifyBasketProduct: (toModify) => {
         return async (dispatch, getState) => {
+            const token = await AsyncStorage.getItem('@token')
             const answer = await axios.put(`${urlBackend}/basket`, { toModify },
                 { headers: { Authorization: "Bearer " + token } })
             dispatch({ type: 'message', payload: { view: true, message: answer.data.message, success: answer.data.success } })

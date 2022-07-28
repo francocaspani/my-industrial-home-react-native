@@ -51,9 +51,30 @@ const basketStyles = StyleSheet.create({
     },
     picker:{
         position: 'absolute',
-        width: 80,
-        backgroundColor: '#FFF',
-        right: 0
+        width: 30,
+        backgroundColor: 'black',
+        right: 0,
+        zIndex: 20,
+        height: '95%',
+        borderLeftColor: 'white',
+        borderLeftWidth: .5
+    },
+    qttButton:{
+        width: 30, 
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomColor: 'white',
+        borderBottomWidth: .5,
+
+    },
+    checkoutButton:{
+        width: 300, 
+        height: 50,
+
+    },
+    chekoutText:{
+        fontSize: 20
     }
 
 })
