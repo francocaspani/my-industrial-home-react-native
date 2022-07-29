@@ -17,6 +17,7 @@ import BasketScreen from '../screens/BasketScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
 import { useEffect } from 'react';
 import basketActions from '../redux/actions/basketActions'
+import ThanksScreen from '../screens/ThanksScreen';
 
 const Drawer = createDrawerNavigator()
 const Tab = createBottomTabNavigator()
@@ -108,6 +109,13 @@ function BasketStack(){
             <Stack.Screen
             name='Checkout'
             component={CheckoutScreen}
+            />
+            <Stack.Screen
+            name='Order confirmation'
+            component={ThanksScreen}
+            options={{
+                headerBackVisible: false
+            }}
             />
         </Stack.Navigator>
     )

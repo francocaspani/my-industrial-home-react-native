@@ -11,7 +11,6 @@ function AccountScreen({ navigation }) {
     const dispatch = useDispatch()
     const [password, setPassword] = useState(null)
     const [userName, setUserName] = useState(null)
-    console.log(user)
     const HandleSubmit = async () => {
         if (!userName) {
             Alert.alert(
@@ -27,7 +26,6 @@ function AccountScreen({ navigation }) {
                 password: password,
                 from: 'propietary-signup'
             }
-            console.log(loggedUser)
             const res = await dispatch(usersActions.logInUser(loggedUser))
             if (!res.data.success) {
                 Alert.alert(

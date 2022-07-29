@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { Picker, PickerIOS } from '@react-native-picker/picker';
 
-export default function BasketScreen() {
+export default function BasketScreen({ navigation }) {
   const user = useSelector(store => store.usersReducer.userData)
   const dispatch = useDispatch()
   const basket = useSelector(store => store.basketReducer.productsBasket)
@@ -45,12 +45,10 @@ export default function BasketScreen() {
   async function deleteBasket(item) {
     const productId = item._id;
     await dispatch(basketActions.deleteBasketProduct(productId));
-    console.log(productId)
     setReload(!reload)
   }
 
   async function modifyBasket(amountPicked, item) {
-    console.warn(item)
     const toModify = {
       productId: item._id,
       amount: amountPicked,
@@ -61,7 +59,27 @@ export default function BasketScreen() {
 
   return (
     <View style={basketStyles.basketContainer}>
-      <ScrollView style={basketStyles.scrollBasket}>
+      {basket.lengh < 1 ?
+        <View style={basketStyles.nobasketContainer}>
+          <Text style={{fontSize: 25, fontWeight: '600'}}>Nothing over here</Text>
+          <Image
+                    style={basketStyles.basketImg}
+                    source={{
+                      uri: 'https://static.thenounproject.com/png/2942210-200.png'
+                    }
+                    }
+                    resizeMode='contain'
+                />
+          <TouchableOpacity style={basketStyles.checkoutButton}
+            onPress={() => navigation.navigate('Search')}
+          >
+            <Text style={basketStyles.chekoutText}>Continue shopping</Text>
+          </TouchableOpacity>
+        </View>
+        :
+
+        <>
+        <ScrollView style={basketStyles.scrollBasket}>
         {
           basket && basket.map((item, i) => {
             const stock = [...Array(item.productId.stock).keys()]
@@ -96,28 +114,28 @@ export default function BasketScreen() {
                 </View>
                 {showPicker &&
                   <ScrollView
-                  showsHorizontalScrollIndicator={false}
-                  scrollEventThrottle={1}
-                  style={basketStyles.picker}
+                    showsHorizontalScrollIndicator={false}
+                    scrollEventThrottle={1}
+                    style={basketStyles.picker}
                   >
-                      {stock.map((stock) => {
-                        return (
-                          <TouchableOpacity
-                          onPress={()=>{
-                            modifyBasket((stock+1), item)
+                    {stock.map((stock) => {
+                      return (
+                        <TouchableOpacity
+                          onPress={() => {
+                            modifyBasket((stock + 1), item)
                             setShowPicker(!showPicker)
                           }}
                           style={basketStyles.qttButton}
-                          >
-                            <Text style={{color: 'white'}}>
-                              {stock +1}
-                            </Text>
+                        >
+                          <Text style={{ color: 'white' }}>
+                            {stock + 1}
+                          </Text>
 
-                          </TouchableOpacity>
-                        )
-                      })}
+                        </TouchableOpacity>
+                      )
+                    })}
                   </ScrollView>}
-                  
+
               </Swipeable>
 
             )
@@ -137,14 +155,19 @@ export default function BasketScreen() {
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           <Text style={{ fontSize: 25 }}>Total:</Text>
           <Text style={{ fontSize: 25 }}>${totalBasket}</Text>
-          
+
         </View>
-        <TouchableOpacity style={basketStyles.checkoutButton}>
+        <TouchableOpacity style={basketStyles.checkoutButton}
+          onPress={() => navigation.navigate('Checkout')}
+        >
           <Text style={basketStyles.chekoutText}>
             Checkout
           </Text>
         </TouchableOpacity>
       </View>
+        </>
+      }
+      
     </View>
   )
 }

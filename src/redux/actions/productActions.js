@@ -60,7 +60,6 @@ const productActions = {
         return async (dispatch, getState) => {
             const res = await axios.delete(`${urlBackend}/products/${id}`)
                 dispatch({ type:'deleteComment', payload:res})
-                {console.log(res)}
                 return res
             }
     },

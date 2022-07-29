@@ -1,71 +1,79 @@
+import React, { Component } from "react";
+import { useState } from "react";
+import { StyleSheet, View, Text, Alert, ActivityIndicator } from "react-native";
+import { CreditCardInput } from "react-native-credit-card-input";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import checkoutStyles from "../styles/checkoutStyles";
 
-import { FormProvider, useForm } from 'react-hook-form'
-import {
-  Alert,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-} from 'react-native'
-import LottieView from 'lottie-react-native'
-import CreditCardForm, { Button, FormModel } from 'rn-credit-card'
+export default function Checkout({ navigation }) {
 
-export default function CheckoutScreen() {
-  const formMethods = useForm({
-    // to trigger the validation on the blur event
-    mode: 'onBlur',
-    defaultValues: {
-      holderName: '',
-      cardNumber: '',
-      expiration: '',
-      cvv: '',
-    },
-  })
-  const { handleSubmit, formState } = formMethods
+  const [form, setForm] = useState({})
+  const [showActIndicator, setshowActIndicator] = useState(false)
 
-  function onSubmit() {
-    Alert.alert('Success: ' + JSON.stringify(model, null, 2))
-  }
+  const _onChange = (formData) => {
+    /* eslint no-console: 0 */
+    setForm(formData)
+  };
+
+  const _onFocus = (field) => {
+    /* eslint no-console: 0 */
+  };
+
 
   return (
-    <FormProvider {...formMethods}>
-      <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView
-          style={styles.avoider}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
-          <CreditCardForm
-            LottieView={LottieView}
-            horizontalStart
-            overrides={{
-              labelText: {
-                marginTop: 16,
-              },
+    <>
+      {showActIndicator ?
+        <ActivityIndicator
+          style={{ marginTop: 300 }}
+        />
+        :
+        <View style={checkoutStyles.container}>
+
+          <CreditCardInput
+            autoFocus
+            requiresName
+            requiresCVC
+            labelStyle={checkoutStyles.label}
+            inputStyle={checkoutStyles.input}
+            validColor={"black"}
+            invalidColor={"red"}
+            placeholderColor={"darkgray"}
+            cardFontFamily={'System'}
+            inputContainerStyle={checkoutStyles.inputContainer}
+            onFocus={_onFocus}
+            onChange={_onChange} />
+
+          <TouchableOpacity
+            style={checkoutStyles.payButton}
+            onPress={() => {
+              if (form) {
+                setshowActIndicator(true)
+                setTimeout(() => {
+                  navigation.navigate('Order confirmation')
+                }, 3000);
+                setTimeout(() => {
+                  setshowActIndicator(false)
+                }, 4000);
+              } else {
+                Alert.alert(
+                  "Error",
+                  'Some of the fields are empty, or the information is wrong',
+                  [
+                    { text: "OK", onPress: () => console.log('done') }
+                  ]
+                );
+              }
+
             }}
-          />
-        </KeyboardAvoidingView>
-        {formState.isValid && (
-          <Button
-            style={styles.button}
-            title={'CONFIRM PAYMENT'}
-            onPress={handleSubmit(onSubmit)}
-          />
-        )}
-      </SafeAreaView>
-    </FormProvider>
+          >
+            <Text
+              style={checkoutStyles.payText}>
+              Pay
+            </Text>
+          </TouchableOpacity>
+        </View>
+      }
+    </>
+
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  avoider: {
-    flex: 1,
-    padding: 36,
-  },
-  button: {
-    margin: 36,
-    marginTop: 0,
-  },
-})
