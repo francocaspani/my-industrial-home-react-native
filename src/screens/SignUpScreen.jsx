@@ -5,7 +5,7 @@ function SignUpScreen() {
     return (
         <WebView 
         style={styles.container}
-        source={{ uri: 'https://google.com' }}
+        source={{ uri: 'https://my-industrial-home-challange-mind-hub.vercel.app/signup' }}
       />
     )
 }

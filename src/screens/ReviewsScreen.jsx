@@ -50,7 +50,7 @@ export default function ReviewsScreen({ route, navigation }) {
             <ScrollView style={{ marginBottom: 85 }}>
               {product?.reviews.map(rev => {
                 return (
-                  <View style={reviewsStyles.everyReview}>
+                  <View style={reviewsStyles.everyReview} key={rev._id}>
                     <View style={reviewsStyles.ratingAndDate}>
                       <View style={reviewsStyles.dateAndName}>
                         <Text>{new Date(rev.date).toDateString()}</Text>

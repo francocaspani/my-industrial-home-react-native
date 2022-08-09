@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width, height } = Dimensions.get('window')
 
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
     const ambients = useSelector(store => store.ambientsReducer.ambients)
     const dispatch = useDispatch()
     useEffect(() => {
@@ -46,6 +46,7 @@ export default function HomeScreen() {
                             {newimg.map((ambient, i) => {
                                 return (
                                     <View style={homeStyles.homeContainer}
+                                    key={i}
                                     >
                                         <ImageBackground
                                             style={homeStyles.imgAmbient}
@@ -53,7 +54,9 @@ export default function HomeScreen() {
                                             source={{
                                                 uri: ambient
                                             }} />
-                                        <TouchableOpacity style={homeStyles.button}>
+                                        <TouchableOpacity style={homeStyles.button}
+                                        onPress={()=> navigation.navigate('Rooms', {id:ambients[i]._id})}
+                                        >
                                             <Text style={homeStyles.buttonText}>{ambients[i].name}</Text>
                                         </TouchableOpacity>
                                     </View>

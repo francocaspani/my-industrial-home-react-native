@@ -7,7 +7,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Rating } from 'react-native-ratings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import usersActions from '../redux/actions/userActions';
-import { Picker, PickerIOS } from '@react-native-picker/picker';
 import basketActions from '../redux/actions/basketActions'
 
 export default function ProductDetailScreen({ route, navigation }) {
@@ -130,28 +129,6 @@ export default function ProductDetailScreen({ route, navigation }) {
                                 onPress={() => navigation.navigate('Reviews', { id: id })}
                             ><Text style={productDetailStyles.buttonReviewsText}>Reviews</Text></TouchableOpacity>
                         </View>
-
-                        {/* {showPicker &&
-                            <Picker
-                                style={productDetailStyles.picker}
-                                selectedValue={amount}
-                                onBlur={()=> setShowPicker(!showPicker)}
-                                onValueChange={(itemValue, itemIndex) =>{
-                                    setAmount(itemValue)
-                                    setTimeout(() => {
-                                        addBasket(itemValue)
-                                        setShowPicker(!showPicker)
-                                        setAmount(0)
-                                    }, 2000);
-                                }
-                                }>
-                                    <Picker.Item label='0' value={0} />
-                                {stock.map((stock) => {
-                                    return (
-                                        <Picker.Item label={`${stock+1}`} value={stock + 1} />
-                                    )
-                                })}
-                            </Picker>} */}
                     </View>
                 </>
             }

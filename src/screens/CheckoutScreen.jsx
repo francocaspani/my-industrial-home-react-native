@@ -13,6 +13,7 @@ export default function Checkout({ navigation }) {
   const _onChange = (formData) => {
     /* eslint no-console: 0 */
     setForm(formData)
+    console.log(formData)
   };
 
   const _onFocus = (field) => {

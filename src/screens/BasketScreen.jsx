@@ -59,7 +59,7 @@ export default function BasketScreen({ navigation }) {
 
   return (
     <View style={basketStyles.basketContainer}>
-      {basket.lengh < 1 ?
+      {basket.length == 0 ?
         <View style={basketStyles.nobasketContainer}>
           <Text style={{fontSize: 25, fontWeight: '600'}}>Nothing over here</Text>
           <Image
@@ -89,7 +89,8 @@ export default function BasketScreen({ navigation }) {
                 <TouchableOpacity
                   onPress={() => deleteBasket(item)}
                   style={{ height: '100%', width: 70, justifyContent: 'center', alignItems: 'center' }}
-                ><Ionicons name='trash-bin' size={40} /></TouchableOpacity>, <TouchableOpacity
+                ><Ionicons name='trash-bin' size={40} /></TouchableOpacity>,
+                <TouchableOpacity
                   onPress={() => setShowPicker(!showPicker)}
                   style={{ height: '100%', width: 70, justifyContent: 'center', alignItems: 'center' }}
                 ><Ionicons name='add-circle' size={40} /></TouchableOpacity>

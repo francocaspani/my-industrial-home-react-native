@@ -18,6 +18,7 @@ import CheckoutScreen from '../screens/CheckoutScreen';
 import { useEffect } from 'react';
 import basketActions from '../redux/actions/basketActions'
 import ThanksScreen from '../screens/ThanksScreen';
+import RoomScreen from '../screens/RoomScreen';
 
 const Drawer = createDrawerNavigator()
 const Tab = createBottomTabNavigator()
@@ -36,6 +37,10 @@ function HomeStack() {
                 options={{
                 headerShown: false,
             }} />
+            <Stack.Screen
+            component={RoomScreen}
+            name='Rooms'
+            />
         </Stack.Navigator>
     )
 }
