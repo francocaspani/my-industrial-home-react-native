@@ -19,6 +19,7 @@ import { useEffect } from 'react';
 import basketActions from '../redux/actions/basketActions'
 import ThanksScreen from '../screens/ThanksScreen';
 import RoomScreen from '../screens/RoomScreen';
+import { LogBox } from 'react-native';
 
 const Drawer = createDrawerNavigator()
 const Tab = createBottomTabNavigator()
@@ -127,6 +128,7 @@ function BasketStack(){
 }
 
 export default function Router() {
+    LogBox.ignoreAllLogs()
     const user = useSelector(store => store.usersReducer.userData)
     const basket = useSelector(store => store.basketReducer.productsBasket)
     const scheme = useColorScheme()

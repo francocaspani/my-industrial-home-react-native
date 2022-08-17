@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import productActions from '../redux/actions/productActions';
@@ -91,7 +91,7 @@ export default function ProductDetailScreen({ route, navigation }) {
         <>
             {product &&
                 <>
-                    <View style={productDetailStyles.detailContainer}>
+                    <ScrollView style={productDetailStyles.detailContainer}>
                         <Image
                             style={productDetailStyles.imgProduct}
                             source={{
@@ -129,7 +129,7 @@ export default function ProductDetailScreen({ route, navigation }) {
                                 onPress={() => navigation.navigate('Reviews', { id: id })}
                             ><Text style={productDetailStyles.buttonReviewsText}>Reviews</Text></TouchableOpacity>
                         </View>
-                    </View>
+                    </ScrollView>
                 </>
             }
 
